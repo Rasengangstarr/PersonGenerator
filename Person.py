@@ -1,5 +1,6 @@
 import random
 
+
 maleFirstnames = ["David", "William", "Matthew", "Mark", "Luke", "John"]
 femaleFirstnames = ["Charlotte", "Mary", "Alison", "Caroline", "Chloe", "Scarlet"]
 
@@ -60,9 +61,17 @@ class Person:
         self.attractive = random.randint(0,10)
         self.spiritual = random.randint(0,10)
 
-        self.description = self.GenerateDescription()
+        self.hunger = 0
+        self.thirst = 0
+        self.stress = 0
+        self.sadness = 0
+        self.loneliness = 0
 
-   
+        self.localX = random.randint(0,100)
+        self.localY = random.randint(0,100)
+
+        self.description = self.GenerateDescription()
+    
 
     def GenerateDescription(self):
         if (self.gender == 0):
@@ -118,7 +127,3 @@ def GenerateTraitDescription(adjList, trait, pronoun):
         return pronoun + " is " + NumToWord(trait) + " " + descriptor + ". "
     else:
         return ""
-
-
-p1 = Person()
-print(p1.description)
