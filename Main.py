@@ -9,34 +9,37 @@ People = []
 
 
 
-for i in range(0,10):
+for i in range(0,1):
     People.append(Person())
+
+for p in People:
+    print(p.description)
     
-def draw(screen):
-    boardX = 0
-    boardY = 0
+# def draw(screen):
+#     boardX = 0
+#     boardY = 0
    
-    while True:
+#     while True:
         
-        for p in People:
-            if (boardX+p.localX < screen.width and boardY+p.localY < screen.height):
-                screen.print_at('\u263A',
-                            boardX+p.localX, boardY+p.localY,
-                            colour=7,
-                            bg=0)
+#         for p in People:
+#             if (boardX+p.localX < screen.width and boardY+p.localY < screen.height):
+#                 screen.print_at('\u263A',
+#                             boardX+p.localX, boardY+p.localY,
+#                             colour=7,
+#                             bg=0)
         
-        ev = screen.get_key()
-        if ev in (ord('Q'), ord('q')):
-            return
-        if ev in (ord('A'), ord('a')):
-            boardX += 1
-        if ev in (ord('D'), ord('d')):
-            boardX -= 1
-        if ev in (ord('W'), ord('w')):
-            boardY += 1
-        if ev in (ord('S'), ord('s')):
-            boardY -= 1
-        screen.Wipe()
+#         ev = screen.get_key()
+#         if ev in (ord('Q'), ord('q')):
+#             return
+#         if ev in (ord('A'), ord('a')):
+#             boardX += 1
+#         if ev in (ord('D'), ord('d')):
+#             boardX -= 1
+#         if ev in (ord('W'), ord('w')):
+#             boardY += 1
+#         if ev in (ord('S'), ord('s')):
+#             boardY -= 1
+#         //screen.Wipe()
         
 
-Screen.wrapper(draw)
+# Screen.wrapper(draw)
