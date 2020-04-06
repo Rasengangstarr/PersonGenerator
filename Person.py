@@ -1,11 +1,14 @@
 import random
 from PersonStat import PersonStat
+from PersonNeed import PersonNeed
+from State import People
+from State import Foods
 
-maleFirstnames = ["David", "William", "Matthew", "Mark", "Luke", "John"]
-femaleFirstnames = ["Charlotte", "Mary", "Alison", "Caroline", "Chloe", "Scarlet"]
+maleFirstnames = ["David", "William", "Matthew", "Mark", "Luke", "John", "Graham", "Wayne", "Ali", "Mo", "Steve"]
+femaleFirstnames = ["Charlotte", "Mary", "Alison", "Caroline", "Chloe", "Scarlet", "Elenor", "Amy", "Sarah", "Colette"]
 
-adjectives = ["Big", "Small", "Red", "Blue", "Grey", "Stoic", "Strong", "Weak"]
-nouns = ["fox", "shield", "wall", "brick", "spear", "bear"]
+adjectives = ["Big", "Small", "Red", "Blue", "Grey", "Stoic", "Strong", "Weak", "Gay", "Far", "Near", "Stone", "Wood"]
+nouns = ["fox", "shield", "wall", "brick", "spear", "bear", "fish", "axe", "pick", "beard", "dick", "son"]
 
 heights = ["short", "very short", "average height", "tall", "very tall"]
 builds = ["skeletally thin", "thin", "muscular", "very muscular", "chubby", "fat", "obese"]
@@ -45,7 +48,7 @@ class Person:
         self.skinColor = random.choice(skinColors)
         self.complexion = random.choice(complexions)
 
-        self.stats = {
+        self.baseStats = {
             "sociability": PersonStat(random.randint(0,10) / 10, ["very shy", "shy", "quite sociable", "very outgoing"]),
             "workethic": PersonStat(random.randint(0,10) / 10, ["very lazy", "lothargic", "quite hardworking", "very industrious"]),
             "speed": PersonStat(random.randint(0,10) / 10, ["sloth-like", "sluggish", "quick", "super speedy"]),
@@ -54,11 +57,60 @@ class Person:
             "trustfulness": PersonStat(random.randint(0,10) / 10, ["untrusting to the point of paranoia", "naturally suspicious", "trusting", "overtrusting"])
         }
 
+        self.needs = {
+            "hunger": PersonNeed(0, random.randint(0,10) / 100, ["completely full", "sated", "a bit peckish", "ravenous", "starving"], random.randint(0,10) / 10),
+            "thirst": PersonNeed(0, random.randint(0,10) / 100, ["not thirsty", "not very thirsty", "kind of thirsty", "parched", "seriously dehydrated"], random.randint(0,10) / 10),
+            "sleepiness": PersonNeed(0, random.randint(0,10) / 100, ["wide awake", "awake", "a bit tired", "tired", "knackered"], random.randint(0,10) / 10)
+        }
+
+
         self.localX = random.randint(0,100)
         self.localY = random.randint(0,100)
 
+        self.target = None
+
         self.description = self.GenerateDescription()
-    
+
+    def Act(self):
+        
+        for n in self.needs:
+            self.needs[n].Increment()
+
+        if (self.needs["hunger"].value > 0 and self.target is None):
+            self.target = self.LocateFood()
+        
+        if (self.target is not None):
+            self.MoveTowardsTarget()
+
+    def MoveTowardsTarget(self):
+
+        if (self.localX == self.target.localX and self.localY == self.target.localY):
+            return
+
+        if (self.localX > self.target.localX):
+            self.localX -= 1
+        elif (self.localX < self.target.localX):
+            self.localX += 1
+
+        if (self.localY > self.target.localY):
+            self.localY -= 1
+        elif (self.localY < self.target.localY):
+            self.localY += 1
+
+    def LocateFood(self):
+        closestFoodDist = 10000000000
+        closestFood = None
+        for f in Foods:
+            distance = ((self.localX-f.localX)**2 + (self.localY-f.localY)**2) ** 0.5
+            if distance < closestFoodDist:
+                closestFood = f
+                closestFoodDist = distance
+        if closestFood is not None:
+            return closestFood
+        else:
+            return None
+
+            
 
     def GenerateDescription(self):
         if (self.gender == 0):
@@ -78,8 +130,8 @@ class Person:
         clauses.append(posessivePronoun + " teeth are " + self.teethType + " and " + pronoun.lower() + " has a " + self.chinType + " chin. ")
         clauses.append(posessivePronoun + " " + self.complexion + " skin is " + self.skinColor + ". ")
        
-        for key in self.stats:
-            clauses.append(pronoun + " is " + self.stats[key].description + ". ")
+        for key in self.baseStats:
+            clauses.append(pronoun + " is " + self.baseStats[key].description + ". ")
 
         random.shuffle(clauses)
 
