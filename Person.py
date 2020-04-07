@@ -1,4 +1,5 @@
 import random
+from Creature import Creature
 from PersonStat import PersonStat
 from PersonNeed import PersonNeed
 from State import People
@@ -24,8 +25,8 @@ skinColors = ["pale white", "fair", "tanned", "dark", "yellow", "reddish", "brow
 complexions = ["dry", "greasy", "healthy"]
 
 
-class Person:
-    def __init__(self):
+class Person(Creature):
+    def __init__(self, xPos, yPos):
         self.gender = random.randint(0,1)
         if (self.gender == 0):
             self.firstname = random.choice(maleFirstnames)
@@ -63,39 +64,26 @@ class Person:
             "sleepiness": PersonNeed(0, random.randint(0,10) / 100, ["wide awake", "awake", "a bit tired", "tired", "knackered"], random.randint(0,10) / 10)
         }
 
-
-        self.localX = random.randint(0,100)
-        self.localY = random.randint(0,100)
-
-        self.target = None
+        pChar = '\u263A'
+        pCol = 7
 
         self.description = self.GenerateDescription()
+
+        Creature.__init__(self, xPos, yPos, pChar, pCol, self.description) 
+
+        self.history = []
 
     def Act(self):
         
         for n in self.needs:
             self.needs[n].Increment()
 
-        if (self.needs["hunger"].value > 0 and self.target is None):
+        if (self.needs["hunger"].value > 0.5 and self.target is None):
+            self.history.append("went looking for food")
             self.target = self.LocateFood()
         
         if (self.target is not None):
-            self.MoveTowardsTarget()
-
-    def MoveTowardsTarget(self):
-
-        if (self.localX == self.target.localX and self.localY == self.target.localY):
-            return
-
-        if (self.localX > self.target.localX):
-            self.localX -= 1
-        elif (self.localX < self.target.localX):
-            self.localX += 1
-
-        if (self.localY > self.target.localY):
-            self.localY -= 1
-        elif (self.localY < self.target.localY):
-            self.localY += 1
+            self.MoveTowards(self.target)
 
     def LocateFood(self):
         closestFoodDist = 10000000000
