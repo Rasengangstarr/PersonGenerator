@@ -18,3 +18,6 @@ class WorldObj:
         self.xPos = tarXPos
         self.yPos = tarYPos
         State.World[tarXPos][tarYPos].append(self)
+
+    def ExaminationText(self):
+        return ["an unremarkable object"]

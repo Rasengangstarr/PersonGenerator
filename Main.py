@@ -10,9 +10,6 @@ from State import World
 from State import WorldSize
 from time import sleep
 
-userInput = 0
-
-objsCreated = 0
 
 for p in range(0,3):
     x = 0
@@ -21,7 +18,6 @@ for p in range(0,3):
         x = random.randint(0,WorldSize-1)
         y = random.randint(0,WorldSize-1)
     World[x][y].append(Person(x,y))
-    objsCreated += 1
 
 for p in range(0,2):
     x = 0
@@ -30,19 +26,14 @@ for p in range(0,2):
         x = random.randint(0,WorldSize-1)
         y = random.randint(0,WorldSize-1)
     World[x][y].append(Food(x,y))
-    objsCreated += 1
 
-# for i in range (0,200):
-#     Foods.append(Food())
 
-# for p in People:
-#     print(p.description)
+
 
     
 def draw(screen):
-    boardX = 0
-    boardY = 0
-   
+    cursorX = 0
+    cursorY = 0
     while True:
         screen.clear()
         for x in range(0, WorldSize-1):
@@ -54,22 +45,41 @@ def draw(screen):
                             bg=0)
                     o.Act()
 
+        screen.print_at('X',
+                    cursorX, cursorY,
+                    colour=2,
+                    bg=0)
+
               
         
         ev = screen.get_key()
         if ev in (ord('Q'), ord('q')):
             return
-        if ev in (ord('A'), ord('a')):
-            boardX += 1
-        if ev in (ord('D'), ord('d')):
-            boardX -= 1
-        if ev in (ord('W'), ord('w')):
-            boardY += 1
-        if ev in (ord('S'), ord('s')):
-            boardY -= 1
+
+        if ev == ord('e'):
+            if len(World[cursorX][cursorY]) > 0:
+                o = World[cursorX][cursorY][0]
+                screen.clear()
+                myY = 0
+                for t in o.ExaminationText():
+                    screen.print_at(t,
+                                    0, myY,
+                                    colour=7,
+                                    bg=0)
+                    myY+=1
+                screen.refresh()
+                screen.wait_for_input(20) 
+        if ev == ord('a'):
+            cursorX -= 1
+        if ev == ord('d'):
+            cursorX += 1
+        if ev == ord('w'):
+            cursorY -= 1
+        if ev == ord('s'):
+            cursorY += 1
         
         screen.refresh()
-        sleep(0.2)
+        sleep(0.05)
         
 
 Screen.wrapper(draw)

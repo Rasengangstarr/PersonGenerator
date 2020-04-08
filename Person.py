@@ -75,6 +75,18 @@ class Person(Creature):
 
         self.history = []
 
+    def ExaminationText(self):
+        exText = ["A person, generally known for having more complex behaviours than plants"]
+        exText.append(self.firstname + " " + self.surname)        
+        exText.extend(self.description)
+        exText.append("stats:")
+        for s in self.baseStats:
+            exText.append(s + ":" + str(self.baseStats[s].value))
+        exText.append("needs:")
+        for n in self.needs:
+            exText.append(n + ":" + str(self.needs[n].value))
+        return exText
+
     def Act(self):
         
         for n in self.needs:
@@ -125,9 +137,4 @@ class Person(Creature):
 
         random.shuffle(clauses)
 
-        description = self.firstname + " " + self.surname + "\n"
-
-        for i in clauses:
-            description += i
-        
-        return description
+        return clauses
