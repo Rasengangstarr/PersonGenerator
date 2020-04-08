@@ -23,6 +23,15 @@ for p in range(0,3):
     World[x][y].append(Person(x,y))
     objsCreated += 1
 
+for p in range(0,2):
+    x = 0
+    y = 0
+    while any(isinstance(o, WorldObj) for o in World[x][y]):
+        x = random.randint(0,WorldSize-1)
+        y = random.randint(0,WorldSize-1)
+    World[x][y].append(Food(x,y))
+    objsCreated += 1
+
 # for i in range (0,200):
 #     Foods.append(Food())
 
@@ -43,6 +52,7 @@ def draw(screen):
                             x, y,
                             colour=o.pCol,
                             bg=0)
+                    o.Act()
 
               
         
@@ -59,7 +69,7 @@ def draw(screen):
             boardY -= 1
         
         screen.refresh()
-        #sleep(0.5)
+        sleep(0.2)
         
 
 Screen.wrapper(draw)

@@ -67,9 +67,11 @@ class Person(Creature):
         pChar = '\u263A'
         pCol = 7
 
+        self.target = None
+
         self.description = self.GenerateDescription()
 
-        Creature.__init__(self, xPos, yPos, pChar, pCol, self.description) 
+        Creature.__init__(self, xPos, yPos, pChar, pCol, self.description, 5) 
 
         self.history = []
 

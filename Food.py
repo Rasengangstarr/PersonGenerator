@@ -1,9 +1,12 @@
 import random
+from WorldObj import WorldObj
 
-class Food:
-    def __init__(self):
-        self.localX = random.randint(0,100)
-        self.localY = random.randint(0,100)
+class Food(WorldObj):
+    def __init__(self, xPos, yPos):
+        pChar = 'f'
+        pCol = 4
+        description = 'some food'
+        WorldObj.__init__(self, xPos, yPos, pChar, pCol, description)
 
     def Act(self):
         return
