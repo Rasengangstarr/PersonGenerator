@@ -6,7 +6,7 @@ class Food(WorldObj):
         pChar = 'f'
         pCol = 4
         description = 'some food'
-        WorldObj.__init__(self, xPos, yPos, pChar, pCol, description)
+        WorldObj.__init__(self, xPos, yPos, pChar, pCol, description, 'some food')
 
     def Act(self):
         return

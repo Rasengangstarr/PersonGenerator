@@ -71,9 +71,12 @@ class Person(Creature):
 
         self.description = self.GenerateDescription()
 
-        Creature.__init__(self, xPos, yPos, pChar, pCol, self.description, 5) 
+        self.shortDesc = self.firstname + " " + self.surname
+
+        Creature.__init__(self, xPos, yPos, pChar, pCol, self.description, 20, self.shortDesc) 
 
         self.history = []
+        self.exText = []
 
     def ExaminationText(self):
         exText = ["A person, generally known for having more complex behaviours than plants"]
@@ -85,6 +88,7 @@ class Person(Creature):
         exText.append("needs:")
         for n in self.needs:
             exText.append(n + ":" + str(self.needs[n].value))
+        exText.extend(Creature.ExaminationText(self))
         return exText
 
     def Act(self):
@@ -96,6 +100,8 @@ class Person(Creature):
             self.history.append("went looking for food")
             self.target = self.LocateFood()
         
+        self.Look()
+
         if (self.target is not None):
             self.MoveTowards(self.target)
 

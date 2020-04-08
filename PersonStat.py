@@ -7,4 +7,6 @@ class PersonStat:
         self.description =  self.GetStatAdjective()
 
     def GetStatAdjective(self):
+        if self.value == 0:
+            return self.adjectives[0]
         return self.adjectives[math.ceil((len(self.adjectives) * self.value))-1]

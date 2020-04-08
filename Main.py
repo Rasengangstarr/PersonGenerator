@@ -27,9 +27,6 @@ for p in range(0,2):
         y = random.randint(0,WorldSize-1)
     World[x][y].append(Food(x,y))
 
-
-
-
     
 def draw(screen):
     cursorX = 0
