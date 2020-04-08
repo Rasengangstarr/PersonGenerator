@@ -5,13 +5,15 @@ import math
 
 class Creature(WorldObj):
 
-    def __init__(self, xPos, yPos, pChar, pCol, description, sightRange, shortDesc):
+    def __init__(self, xPos, yPos, pChar, pCol, description, sightRange, shortDesc, holdable):
         self.knownObjects = []
         self.sightRange = sightRange
         self.perception = 8
         self.seeking = None
         self.target = None
-        WorldObj.__init__(self, xPos, yPos, pChar, pCol, description, shortDesc)
+        self.intent = None
+        self.goal = None
+        WorldObj.__init__(self, xPos, yPos, pChar, pCol, description, shortDesc, holdable)
 
     def Act(self):
         if self.hasActed:

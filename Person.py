@@ -3,6 +3,8 @@ from Creature import Creature
 from PersonStat import PersonStat
 from PersonNeed import PersonNeed
 from Food import Food
+from enum import Enum
+
 maleFirstnames = ["David", "William", "Matthew", "Mark", "Luke", "John", "Graham", "Wayne", "Ali", "Mo", "Steve"]
 femaleFirstnames = ["Charlotte", "Mary", "Alison", "Caroline", "Chloe", "Scarlet", "Elenor", "Amy", "Sarah", "Colette"]
 
@@ -22,6 +24,14 @@ teethTypes = ["crooked", "mangled", "gone", "shining white", "white", "yellow"]
 skinColors = ["pale white", "fair", "tanned", "dark", "yellow", "reddish", "brown", "pitch black"]
 complexions = ["dry", "greasy", "healthy"]
 
+
+class Intent(Enum):
+    PICKUP = 1,
+    TALK = 2,
+    EAT = 3
+
+class Goal(Enum):
+    EAT = 1
 
 class Person(Creature):
     def __init__(self, xPos, yPos):
@@ -71,7 +81,7 @@ class Person(Creature):
 
         self.shortDesc = self.firstname + " " + self.surname
 
-        Creature.__init__(self, xPos, yPos, pChar, pCol, self.description, 20, self.shortDesc) 
+        Creature.__init__(self, xPos, yPos, pChar, pCol, self.description, 20, self.shortDesc, False) 
 
         self.exText = []
 
@@ -95,10 +105,11 @@ class Person(Creature):
 
         if (self.needs["hunger"].value > 0.0):
             self.history.append("got hungry")
+            self.goal = Goal.EAT
             self.target = Creature.FindObjectOfType(self, Food)
+            self.intentForTarget = "pickup"
         
         self.Look()
-
         Creature.Act(self)
 
     def GenerateDescription(self):
