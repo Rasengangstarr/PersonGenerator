@@ -31,17 +31,20 @@ for f in range(0,1):
 def draw(screen):
     cursorX = 0
     cursorY = 0
+    paused = False
     while True:
         screen.clear()
         for x in range(0, WorldSize-1):
             for y in range(0, WorldSize-1):
                 for o in World[x][y]:
-                    o.Act()
+                    if not paused:
+                        o.Act()
 
         screen.print_at('X',
                     cursorX, cursorY,
                     colour=2,
                     bg=0)
+        
         
         #TODO: find a more efficient way of doing this
         for x in range(0, WorldSize-1):
@@ -74,7 +77,11 @@ def draw(screen):
                                     bg=0)
                     myY+=1
                 screen.refresh()
-                screen.wait_for_input(20) 
+                screen.wait_for_input(20)
+
+        if ev == ord('p'):
+            paused = not paused
+
         if ev == ord('a'):
             cursorX -= 1
         if ev == ord('d'):
@@ -85,7 +92,7 @@ def draw(screen):
             cursorY += 1
         
         screen.refresh()
-        sleep(0.5)
+        sleep(0.2)
         
 
 Screen.wrapper(draw)
