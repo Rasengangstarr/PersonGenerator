@@ -2,9 +2,7 @@ import random
 from Creature import Creature
 from PersonStat import PersonStat
 from PersonNeed import PersonNeed
-from State import People
-from State import Foods
-
+from Food import Food
 maleFirstnames = ["David", "William", "Matthew", "Mark", "Luke", "John", "Graham", "Wayne", "Ali", "Mo", "Steve"]
 femaleFirstnames = ["Charlotte", "Mary", "Alison", "Caroline", "Chloe", "Scarlet", "Elenor", "Amy", "Sarah", "Colette"]
 
@@ -75,7 +73,6 @@ class Person(Creature):
 
         Creature.__init__(self, xPos, yPos, pChar, pCol, self.description, 20, self.shortDesc) 
 
-        self.history = []
         self.exText = []
 
     def ExaminationText(self):
@@ -96,29 +93,13 @@ class Person(Creature):
         for n in self.needs:
             self.needs[n].Increment()
 
-        if (self.needs["hunger"].value > 0.5 and self.target is None):
-            self.history.append("went looking for food")
-            self.target = self.LocateFood()
+        if (self.needs["hunger"].value > 0.0):
+            self.history.append("got hungry")
+            self.target = Creature.FindObjectOfType(self, Food)
         
         self.Look()
 
-        if (self.target is not None):
-            self.MoveTowards(self.target)
-
-    def LocateFood(self):
-        closestFoodDist = 10000000000
-        closestFood = None
-        for f in Foods:
-            distance = ((self.localX-f.localX)**2 + (self.localY-f.localY)**2) ** 0.5
-            if distance < closestFoodDist:
-                closestFood = f
-                closestFoodDist = distance
-        if closestFood is not None:
-            return closestFood
-        else:
-            return None
-
-            
+        Creature.Act(self)
 
     def GenerateDescription(self):
         if (self.gender == 0):

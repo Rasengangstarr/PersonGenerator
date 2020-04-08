@@ -10,15 +10,10 @@ class WorldObj:
         self.description = description
         self.shortDesc = shortDesc
         self.history = []
+        self.hasActed = False
 
     def Act(self):
-        pass
-    
-    def Move(self, tarXPos, tarYPos):
-        State.World[self.xPos][self.yPos].remove(self)
-        self.xPos = tarXPos
-        self.yPos = tarYPos
-        State.World[tarXPos][tarYPos].append(self)
+        self.hasActed = True
 
     def ExaminationText(self):
         return ["an unremarkable object"]

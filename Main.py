@@ -11,7 +11,7 @@ from State import WorldSize
 from time import sleep
 
 
-for p in range(0,3):
+for p in range(0,1):
     x = 0
     y = 0
     while any(isinstance(o, WorldObj) for o in World[x][y]):
@@ -19,7 +19,7 @@ for p in range(0,3):
         y = random.randint(0,WorldSize-1)
     World[x][y].append(Person(x,y))
 
-for p in range(0,2):
+for f in range(0,1):
     x = 0
     y = 0
     while any(isinstance(o, WorldObj) for o in World[x][y]):
@@ -36,16 +36,25 @@ def draw(screen):
         for x in range(0, WorldSize-1):
             for y in range(0, WorldSize-1):
                 for o in World[x][y]:
-                    screen.print_at(o.pChar,
-                            x, y,
-                            colour=o.pCol,
-                            bg=0)
                     o.Act()
 
         screen.print_at('X',
                     cursorX, cursorY,
                     colour=2,
                     bg=0)
+        
+        #TODO: find a more efficient way of doing this
+        for x in range(0, WorldSize-1):
+            for y in range(0, WorldSize-1):
+                for o in World[x][y]:
+                    o.hasActed = False
+                    screen.print_at(o.pChar,
+                            x, y,
+                            colour=o.pCol,
+                            bg=0)
+
+
+        
 
               
         
@@ -76,7 +85,7 @@ def draw(screen):
             cursorY += 1
         
         screen.refresh()
-        sleep(0.05)
+        sleep(0.5)
         
 
 Screen.wrapper(draw)

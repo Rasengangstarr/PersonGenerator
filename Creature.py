@@ -10,22 +10,34 @@ class Creature(WorldObj):
         self.sightRange = sightRange
         self.perception = 8
         self.seeking = None
+        self.target = None
         WorldObj.__init__(self, xPos, yPos, pChar, pCol, description, shortDesc)
+
+    def Act(self):
+        if self.hasActed:
+            return
+        if (self.target is not None):
+            self.MoveTowards(self.target)
+        WorldObj.Act(self)
         
     def MoveTowards(self, target):
+        xdir = 0
+        ydir = 0
         if (self.xPos == target.xPos and self.yPos == target.yPos):
             return
-
         if (self.xPos > target.xPos):
-            self.xPos -= 1
+            xdir-=1
         elif (self.xPos < target.xPos):
-            self.xPos += 1
-
+            xdir+=1
         if (self.yPos > target.yPos):
-            self.yPos -= 1
+            ydir-=1
         elif (self.yPos < target.yPos):
-            self.yPos += 1
+            ydir+=1
 
+        World[self.xPos][self.yPos].remove(self)
+        self.xPos += xdir
+        self.yPos += ydir
+        World[self.xPos][self.yPos].append(self)
 
     def Look(self):
         minX = self.xPos - math.floor(self.sightRange)
@@ -43,6 +55,18 @@ class Creature(WorldObj):
                                 if (o in self.knownObjects):
                                     self.knownObjects.remove(o)
                                 self.knownObjects.append(o)
+    
+    def FindObjectOfType(self, soughtType):
+        nearestKnownDist = 1000000
+        nearestKnown = None
+        for o in self.knownObjects:
+            if isinstance(o,soughtType):
+                dist = (((self.xPos - o.xPos)**2) + ((self.yPos - o.yPos)**2)) ** 0.5
+                if dist < nearestKnownDist:
+                    nearestKnown = o
+                    nearestKnownDist = dist
+
+        return nearestKnown
 
     def ExaminationText(self):
         ex = ["this creature knows about:"]
