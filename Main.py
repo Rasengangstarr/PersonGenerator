@@ -4,6 +4,7 @@ from asciimatics.screen import Screen
 from Person import Person
 from WorldObj import WorldObj
 from Food import Food
+from Plant import Plant
 from State import People
 from State import Foods
 from State import World
@@ -19,13 +20,13 @@ for p in range(0,1):
         y = random.randint(0,WorldSize-1)
     World[x][y].append(Person(x,y))
 
-for f in range(0,1):
+for p in range(0,1):
     x = 0
     y = 0
     while any(isinstance(o, WorldObj) for o in World[x][y]):
         x = random.randint(0,WorldSize-1)
         y = random.randint(0,WorldSize-1)
-    World[x][y].append(Food(x,y))
+    World[x][y].append(Plant(x,y))
 
     
 def draw(screen):
@@ -92,7 +93,7 @@ def draw(screen):
             cursorY += 1
         
         screen.refresh()
-        sleep(0.2)
+        sleep(2)
         
 
 Screen.wrapper(draw)

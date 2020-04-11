@@ -2,6 +2,7 @@ import random
 from Creature import Creature
 from PersonStat import PersonStat
 from PersonNeed import PersonNeed
+import Planner
 from Food import Food
 from enum import Enum
 
@@ -102,15 +103,13 @@ class Person(Creature):
         
         for n in self.needs:
             self.needs[n].Increment()
-
+        finalAction = ""
         if (self.needs["hunger"].value > 0.0):
-            self.history.append("got hungry")
-            self.goal = Goal.EAT
-            self.target = Creature.FindObjectOfType(self, Food)
-            self.intentForTarget = "pickup"
-        
+            self.goal = "[AGENTHUNGERDECREASED]"
+            finalAction = "agentEatsFood"
+            
         self.Look()
-        Creature.Act(self)
+        Planner.CalculatePlan(self.goal, finalAction, self)
 
     def GenerateDescription(self):
         if (self.gender == 0):

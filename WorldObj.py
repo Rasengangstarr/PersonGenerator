@@ -19,3 +19,8 @@ class WorldObj:
 
     def ExaminationText(self):
         return ["an unremarkable object"]
+
+    def Destroyed():
+        for h in self.holding:
+             World[self.xPos][self.yPos].append(h)
+        World[self.xPos][self.yPos].remove(self)
